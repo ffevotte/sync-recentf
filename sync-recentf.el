@@ -128,7 +128,16 @@ except it synchronizes the recent files list before saving it to
   "Synchronize the recent files list."
   (sync-recentf--sync)
   ad-do-it
-  (sync-recentf-save-list))
+  (let ((ask-user-about-lock-orig (symbol-function 'ask-user-about-lock)))
+    (fset 'ask-user-about-lock
+          (lambda (file opponent)
+            (message "sync-recentf: file locked, aborting.")
+            ;;(signal 'file-locked (list file opponent))
+            (error "file `%s' locked by `%s'" file opponent)))
+    (unwind-protect
+        (let ((warning-suppress-types 'emacs))
+          (sync-recentf-save-list))
+      (fset 'ask-user-about-lock ask-user-about-lock-orig))))
 
 (defadvice recentf-load-list (after sync-recentf activate)
   "Mark the recentf files list as synchronized."
