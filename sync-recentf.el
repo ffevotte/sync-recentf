@@ -136,7 +136,7 @@ except it synchronizes the recent files list before saving it to
             ;;(signal 'file-locked (list file opponent))
             (error "File `%s' locked by `%s'" file opponent)))
     (unwind-protect
-        (let ((warning-suppress-types 'emacs))
+        (let ((warning-suppress-types '(emacs)))
           (sync-recentf-save-list))
       (fset 'ask-user-about-lock ask-user-about-lock-orig))))
 
