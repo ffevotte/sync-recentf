@@ -59,7 +59,7 @@
 ;; * Recent list synchronization
 
 (defvar sync-recentf-marker
-  (concat temporary-file-directory "recentf-marker")
+  (concat temporary-file-directory "sync-recentf-marker")
   "File used as a marker for recentf list merges.")
 
 ;; The recentf marker file must exist (otherwise it will be cleaned up by
@@ -129,16 +129,14 @@ except it synchronizes the recent files list before saving it to
   "Synchronize the recent files list."
   (sync-recentf--sync)
   ad-do-it
-  (let ((ask-user-about-lock-orig (symbol-function 'ask-user-about-lock)))
-    (fset 'ask-user-about-lock
+  (letf (((symbol-function 'ask-user-about-lock)
           (lambda (file opponent)
-            (message "sync-recentf: file locked, aborting.")
+            (message "sync-recentf: file `%s' locked by `%s'. Aborting."
+                     file opponent)
             ;;(signal 'file-locked (list file opponent))
-            (error "File `%s' locked by `%s'" file opponent)))
-    (unwind-protect
-        (let ((warning-suppress-types '(emacs)))
-          (sync-recentf-save-list))
-      (fset 'ask-user-about-lock ask-user-about-lock-orig))))
+            (throw :sync-recentf (list file opponent)))))
+    (catch :sync-recentf
+      (sync-recentf-save-list))))
 
 (defadvice recentf-load-list (after sync-recentf activate)
   "Mark the recentf files list as synchronized."
