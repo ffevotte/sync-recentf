@@ -1,4 +1,4 @@
-# sync-recentf
+# sync-recentf [![MELPA](http://melpa.org/packages/sync-recentf-badge.svg)](http://melpa.org/#/sync-recentf) [![license GPLv3+](https://img.shields.io/badge/license-GPL_3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
 
 This package helps synchronizing the recent files list between emacs instances. Without it, each emacs instance manages its own recent files list. The last one to close persistently saves its list into `recentf-save-file`; all files recently opened by other instances are overwritten.
 
@@ -7,9 +7,12 @@ With `sync-recentf`, all running emacs instances periodically synchronize their 
 
 ## Installation
 
-From `git`:
+`sync-recentf` can be found on [MELPA](http://melpa.org/#/sync-recentf) and it's the recommended way of installing it.
 
-1. get this repository:
+
+Otherwise, you can install it manually from the sources:
+
+1. get the repository:
 
    ```sh
    $ git clone https://github.com/ffevotte/sync-recentf.git
@@ -46,7 +49,7 @@ If you make improvements to this code or have suggestions, please do not hesitat
 
 ## License
 
-Copyright (C) 2014 François Févotte.
+Copyright (C) 2014-2015 François Févotte.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
