@@ -55,6 +55,8 @@
 ;;; Code:
 
 (require 'recentf)
+(eval-when-compile
+  (require 'cl))
 
 ;; * Recent list synchronization
 
