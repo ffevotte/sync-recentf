@@ -131,12 +131,11 @@ except it synchronizes the recent files list before saving it to
   "Synchronize the recent files list."
   (sync-recentf--sync)
   ad-do-it
-  (letf (((symbol-function 'ask-user-about-lock)
-          (lambda (file opponent)
-            (message "sync-recentf: file `%s' locked by `%s'. Aborting."
-                     file opponent)
-            ;;(signal 'file-locked (list file opponent))
-            (throw :sync-recentf (list file opponent)))))
+  (cl-letf (((symbol-function 'ask-user-about-lock)
+             (lambda (file opponent)
+               (message "sync-recentf: file `%s' locked by `%s'. Aborting."
+                        file opponent)
+               (throw :sync-recentf (list file opponent)))))
     (catch :sync-recentf
       (sync-recentf-save-list))))
 
